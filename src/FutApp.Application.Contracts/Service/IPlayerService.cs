@@ -8,7 +8,11 @@ using Volo.Abp.Application.Services;
 namespace FutApp
 {
     public interface IPlayerService : IApplicationService
-    {
+    {   
         Task<List<PlayerDto>> GetListAsync();
+        Task<PlayerDto> GetAsync(Guid id);
+        Task<PlayerDto> CreateAsync(PlayerDto input);
+        Task DeleteAsync(Guid id);
+
     }
 }

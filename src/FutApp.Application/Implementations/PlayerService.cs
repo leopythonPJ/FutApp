@@ -22,7 +22,7 @@ namespace FutApp.Implementations
         public async Task<List<PlayerDto>> GetListAsync()
         {
             List<Player> players = await _playerRepository.GetListAsync();
-            
+
             return players
                 .Select(item => new PlayerDto
                 {
@@ -31,6 +31,45 @@ namespace FutApp.Implementations
                     Number = item.Number,
                     BirthDate = item.BirthDate
                 }).ToList();
+        }
+
+        public async Task<PlayerDto> GetAsync(Guid id)
+        {
+            Player player = await _playerRepository.GetAsync(id);
+
+            PlayerDto playerDto = new PlayerDto
+            {
+                FirstName = player.FirstName,
+                LastName = player.LastName,
+                Number = player.Number,
+                BirthDate = player.BirthDate
+            };
+
+            return playerDto;
+        }
+
+        public async Task<PlayerDto> CreateAsync(PlayerDto input)
+        {
+            Player player = new Player
+            {
+                CreationTime = DateTime.Now,
+                CreatorId = CurrentUser.Id,
+                FirstName = input.FirstName,
+                LastName = input.LastName,
+                BirthDate = input.BirthDate,
+                Number = input.Number
+            };
+
+            await _playerRepository.InsertAsync(player);
+
+            return input;
+        }
+
+        public async Task DeleteAsync(Guid id)
+        {
+            Player player = await _playerRepository.GetAsync(id);
+
+            if (player != null) { await _playerRepository.DeleteAsync(player); }
         }
     }
 }
