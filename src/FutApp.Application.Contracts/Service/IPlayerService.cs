@@ -12,7 +12,7 @@ namespace FutApp
         Task<List<PlayerDto>> GetListAsync();
         Task<PlayerDto> GetAsync(Guid id);
         Task<PlayerDto> CreateAsync(PlayerDto input);
+        Task<PlayerDto> UpdateAsync(PlayerUpdateDto input, Guid id);
         Task DeleteAsync(Guid id);
-
     }
 }

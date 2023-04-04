@@ -1,0 +1,17 @@
+﻿using FutApp.Dtos;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading.Tasks;
+using Volo.Abp.Application.Services;
+
+namespace FutApp.Service
+{
+    public interface ITeamService : IApplicationService
+    {
+        Task<List<TeamDto>> GetListAsync();
+        Task<TeamDto> GetAsync(Guid id);
+        Task<TeamDto> CreateAsync(TeamDto input);
+        Task DeleteAsync(Guid id);
+    }
+}

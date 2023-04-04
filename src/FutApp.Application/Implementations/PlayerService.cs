@@ -10,8 +10,8 @@ using Volo.Abp.Domain.Repositories;
 
 namespace FutApp.Implementations
 {
-    public class PlayerService : ApplicationService, IPlayerService
-    {
+        public class PlayerService : ApplicationService, IPlayerService
+        {
         private readonly IRepository<Player, Guid> _playerRepository;
 
         public PlayerService(IRepository<Player, Guid> playerRepository)
@@ -42,7 +42,8 @@ namespace FutApp.Implementations
                 FirstName = player.FirstName,
                 LastName = player.LastName,
                 Number = player.Number,
-                BirthDate = player.BirthDate
+                BirthDate = player.BirthDate,
+                Position = (PositionDto)player.Position
             };
 
             return playerDto;
@@ -57,12 +58,37 @@ namespace FutApp.Implementations
                 FirstName = input.FirstName,
                 LastName = input.LastName,
                 BirthDate = input.BirthDate,
-                Number = input.Number
+                Number = input.Number,
+                Position = (Position)input.Position
             };
 
             await _playerRepository.InsertAsync(player);
 
             return input;
+        }
+
+        public async Task<PlayerDto> UpdateAsync(PlayerUpdateDto input, Guid id) 
+        {
+            Player player = await _playerRepository.GetAsync(id);
+
+            if(player != null)
+            {
+                player.FirstName = input.FirstName;
+                player.LastName = input.LastName;
+                player.Number = input.Number;
+                player.Position = (Position)input.Position;
+            }
+
+            Player updatedPlayer = await _playerRepository.UpdateAsync(player);
+       
+            return new PlayerDto
+            {
+                FirstName = updatedPlayer.FirstName,
+                LastName = updatedPlayer.LastName,
+                Number = updatedPlayer.Number,
+                BirthDate = updatedPlayer.BirthDate,
+                Position = (PositionDto)updatedPlayer.Position
+            };
         }
 
         public async Task DeleteAsync(Guid id)
