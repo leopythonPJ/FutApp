@@ -15,7 +15,7 @@ namespace FutApp.Teams
         public string Name { get; set; } = string.Empty;
         public string ShortName { get; set; } = string.Empty;
         public string Img { get; set; } = string.Empty;
-        public IdentityUser? President { get; set; };
+        public IdentityUser? President { get; set; }
         public DateTime BirthDate { get; set; }
         public List<Player>? Players { get; set; }
         public int Goals { get; set; } = 0;
