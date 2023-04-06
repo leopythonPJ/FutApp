@@ -24,43 +24,22 @@ namespace FutApp.Implementations
             List<Player> players = await _playerRepository.GetListAsync();
 
             return players
-                .Select(item => new PlayerDto
-                {
-                    FirstName = item.FirstName,
-                    LastName = item.LastName,
-                    Number = item.Number,
-                    BirthDate = item.BirthDate
-                }).ToList();
+                .Select(item => ObjectMapper.Map<Player,PlayerDto>(item)).ToList();
+
         }
 
         public async Task<PlayerDto> GetAsync(Guid id)
         {
             Player player = await _playerRepository.GetAsync(id);
 
-            PlayerDto playerDto = new PlayerDto
-            {
-                FirstName = player.FirstName,
-                LastName = player.LastName,
-                Number = player.Number,
-                BirthDate = player.BirthDate,
-                Position = (PositionDto)player.Position
-            };
-
-            return playerDto;
+            return ObjectMapper.Map<Player, PlayerDto>(player);
         }
 
         public async Task<PlayerDto> CreateAsync(PlayerDto input)
         {
-            Player player = new Player
-            {
-                CreationTime = DateTime.Now,
-                CreatorId = CurrentUser.Id,
-                FirstName = input.FirstName,
-                LastName = input.LastName,
-                BirthDate = input.BirthDate,
-                Number = input.Number,
-                Position = (Position)input.Position
-            };
+            Player player = ObjectMapper.Map<PlayerDto, Player>(input);
+            player.CreationTime = DateTime.Now;
+            player.CreatorId = CurrentUser.Id;
 
             await _playerRepository.InsertAsync(player);
 
@@ -73,22 +52,12 @@ namespace FutApp.Implementations
 
             if(player != null)
             {
-                player.FirstName = input.FirstName;
-                player.LastName = input.LastName;
-                player.Number = input.Number;
-                player.Position = (Position)input.Position;
+                ObjectMapper.Map<PlayerUpdateDto, Player>(input, player);
             }
 
             Player updatedPlayer = await _playerRepository.UpdateAsync(player);
        
-            return new PlayerDto
-            {
-                FirstName = updatedPlayer.FirstName,
-                LastName = updatedPlayer.LastName,
-                Number = updatedPlayer.Number,
-                BirthDate = updatedPlayer.BirthDate,
-                Position = (PositionDto)updatedPlayer.Position
-            };
+            return ObjectMapper.Map<Player,PlayerDto>(updatedPlayer);
         }
 
         public async Task DeleteAsync(Guid id)
