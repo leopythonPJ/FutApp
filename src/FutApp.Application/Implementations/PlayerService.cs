@@ -52,12 +52,11 @@ namespace FutApp.Implementations
 
             if(player != null)
             {
-                ObjectMapper.Map<PlayerUpdateDto, Player>(input, player);
+                Player updatedPlayer = await _playerRepository.UpdateAsync(player);
+                return ObjectMapper.Map<Player, PlayerDto>(updatedPlayer);
             }
 
-            Player updatedPlayer = await _playerRepository.UpdateAsync(player);
-       
-            return ObjectMapper.Map<Player,PlayerDto>(updatedPlayer);
+            throw new Exception("Player to update not found");            
         }
 
         public async Task DeleteAsync(Guid id)

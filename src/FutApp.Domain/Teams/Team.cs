@@ -1,4 +1,5 @@
 ﻿using FutApp.Players;
+using FutApp.Requests;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,5 +22,8 @@ namespace FutApp.Teams
         public int Goals { get; set; } = 0;
         public int YellowCards { get; set; } = 0;
         public int RedCards { get; set; } = 0;
+        public bool LookingForPlayers { get; set; } = false;
+        public List<Request>? Requests { get; set; }
+
     }
 }
