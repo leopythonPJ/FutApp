@@ -1,4 +1,5 @@
-﻿using FutApp.Players;
+﻿using FutApp.Requests;
+using FutApp.Players;
 using FutApp.Teams;
 using Microsoft.EntityFrameworkCore;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
@@ -51,6 +52,7 @@ public class FutAppDbContext :
     //App
     public DbSet<Player> Players { get; set; }
     public DbSet<Team> Teams { get; set; }
+    public DbSet<Request> Request { get; set; }
 
     // Tenant Management
     public DbSet<Tenant> Tenants { get; set; }
