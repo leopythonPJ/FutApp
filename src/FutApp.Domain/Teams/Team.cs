@@ -20,7 +20,6 @@ namespace FutApp.Teams
         public DateTime BirthDate { get; set; }
         public List<Player> Players { get; set; } = new List<Player>();
         public int Goals { get; set; } = 0;
-        public int Asists { get; set; } = 0;
         public int YellowCards { get; set; } = 0;
         public int RedCards { get; set; } = 0;
         public bool LookingForPlayers { get; set; } = false;

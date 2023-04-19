@@ -98,26 +98,5 @@ namespace FutApp.Implementations
 
             return ObjectMapper.Map<Team, TeamDto>(teamUpdate);
         }
-
-        public async Task<TeamDto> RemovePlayers(List<Guid> players, Guid id)
-        {
-            Team team = await _teamRepository.GetAsync(id);
-
-            if(team == null) { throw new Exception("Team not found"); }
-
-            foreach (Guid playerId in players)
-            {
-                Player player = await _playerRepository.GetAsync(playerId);
-
-                if (player != null)
-                {
-                    team.Players.Remove(player);
-                }
-            }
-
-            Team teamUpdate = await _teamRepository.UpdateAsync(team);
-
-            return ObjectMapper.Map<Team, TeamDto>(teamUpdate);
-        }
     }
 }

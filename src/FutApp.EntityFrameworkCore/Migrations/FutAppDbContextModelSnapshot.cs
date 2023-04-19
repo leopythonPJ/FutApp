@@ -29,9 +29,6 @@ namespace FutApp.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Asists")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
 
@@ -58,7 +55,7 @@ namespace FutApp.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("Goals")
+                    b.Property<int>("Golas")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("LastModificationTime")
@@ -139,16 +136,13 @@ namespace FutApp.Migrations
 
                     b.HasIndex("TeamId");
 
-                    b.ToTable("Requests");
+                    b.ToTable("Request");
                 });
 
             modelBuilder.Entity("FutApp.Teams.Team", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Asists")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
