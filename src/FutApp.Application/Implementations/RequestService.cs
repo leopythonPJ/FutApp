@@ -70,4 +70,3 @@ namespace FutApp.Implementations
         }
     }
 }
-}

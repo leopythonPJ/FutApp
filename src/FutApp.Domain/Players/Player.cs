@@ -14,7 +14,8 @@ namespace FutApp.Players
         public string LastName { get; set; } = string.Empty;
         public int Number { get; set; } = 0;
         public DateTime BirthDate { get; set; }
-        public int Golas { get; set; } = 0;
+        public int Goals { get; set; } = 0;
+        public int Asists { get; set; } = 0;
         public Position? Position { get; set; }
         public int YellowCards { get; set; } = 0;
         public int RedCards { get; set; } = 0;
