@@ -52,7 +52,7 @@ public class FutAppDbContext :
     //App
     public DbSet<Player> Players { get; set; }
     public DbSet<Team> Teams { get; set; }
-    public DbSet<Request> Request { get; set; }
+    public DbSet<Request> Requests { get; set; }
 
     // Tenant Management
     public DbSet<Tenant> Tenants { get; set; }

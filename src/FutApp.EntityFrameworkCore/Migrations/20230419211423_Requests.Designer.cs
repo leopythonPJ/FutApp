@@ -4,6 +4,7 @@ using FutApp.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Volo.Abp.EntityFrameworkCore;
 
@@ -12,9 +13,11 @@ using Volo.Abp.EntityFrameworkCore;
 namespace FutApp.Migrations
 {
     [DbContext(typeof(FutAppDbContext))]
-    partial class FutAppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230419211423_Requests")]
+    partial class Requests
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -58,7 +61,7 @@ namespace FutApp.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("Goals")
+                    b.Property<int>("Golas")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("LastModificationTime")
