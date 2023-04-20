@@ -20,6 +20,7 @@ namespace FutApp.Players
         public int YellowCards { get; set; } = 0;
         public int RedCards { get; set; } = 0;
         public List<Team>? Teams { get; set; }
+        public bool IsActive { get; set; } = true;
 
 
         public int GetAge()

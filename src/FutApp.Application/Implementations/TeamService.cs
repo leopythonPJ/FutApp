@@ -28,44 +28,25 @@ namespace FutApp.Implementations
             List<Team> teams = await _teamRepository.GetListAsync();
 
             return teams
-                .Select(item => new TeamDto
-                {
-                    Name = item.Name,
-                    ShortName = item.ShortName,
-                    Img = item.Img,
-                    Goals = item.Goals,
-                    YellowCards = item.YellowCards,
-                    RedCards = item.RedCards
-
-                }).ToList();
+            .Where(x => x.IsActive)
+            .Select(item => ObjectMapper.Map<Team, TeamDto>(item)).ToList();
         }
 
         public async Task<TeamDto> GetAsync(Guid id)
         {
             Team team = await _teamRepository.GetAsync(id);
 
-            TeamDto teamDto = new TeamDto
+            if (team != null && team.IsActive)
             {
-                Name = team.Name,
-                ShortName = team.ShortName,
-                Img = team.Img,
-                Goals = team.Goals,
-                YellowCards = team.YellowCards,
-                RedCards = team.RedCards
-            };
+                return ObjectMapper.Map<Team, TeamDto>(team);
+            }
 
-            return teamDto;
+            throw new Exception("Team not found");
         }
 
         public async Task<TeamDto> CreateAsync(TeamDto input)
         {
-            Team team = new Team
-            {
-                Name = input.Name,
-                ShortName = input.ShortName,
-                Img = input.Img
-            };
-
+            Team team = ObjectMapper.Map<TeamDto, Team>(input);
             await _teamRepository.InsertAsync(team);
 
             return input;
@@ -75,7 +56,11 @@ namespace FutApp.Implementations
         {
             Team team = await _teamRepository.GetAsync(id);
 
-            if (team != null) { await _teamRepository.DeleteAsync(team); }
+            if (team != null) 
+            {
+                team.IsActive = false;
+                await _teamRepository.UpdateAsync(team);
+            }
         }
 
         public async Task<TeamDto> AddPlayers(List<Guid> players, Guid id)

@@ -24,6 +24,7 @@ namespace FutApp.Implementations
             List<Player> players = await _playerRepository.GetListAsync();
 
             return players
+                .Where(x => x.IsActive)
                 .Select(item => ObjectMapper.Map<Player,PlayerDto>(item)).ToList();
 
         }
@@ -32,7 +33,12 @@ namespace FutApp.Implementations
         {
             Player player = await _playerRepository.GetAsync(id);
 
-            return ObjectMapper.Map<Player, PlayerDto>(player);
+            if (player != null && player.IsActive)
+            {
+                return ObjectMapper.Map<Player, PlayerDto>(player);
+            }
+
+            throw new Exception("Player not found");
         }
 
         public async Task<PlayerDto> CreateAsync(PlayerDto input)
@@ -63,7 +69,12 @@ namespace FutApp.Implementations
         {
             Player player = await _playerRepository.GetAsync(id);
 
-            if (player != null) { await _playerRepository.DeleteAsync(player); }
+            if (player != null) 
+            {
+                player.IsActive = false;
+                await _playerRepository.UpdateAsync(player);
+            }
+
         }
     }
 }

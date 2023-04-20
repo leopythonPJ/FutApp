@@ -25,6 +25,7 @@ namespace FutApp.Teams
         public int RedCards { get; set; } = 0;
         public bool LookingForPlayers { get; set; } = false;
         public List<Request>? Requests { get; set; }
+        public bool IsActive { get; set; } = true;
 
     }
 }
