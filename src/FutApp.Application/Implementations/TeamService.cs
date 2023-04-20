@@ -56,6 +56,11 @@ namespace FutApp.Implementations
         {
             Team team = await _teamRepository.GetAsync(id);
 
+            if (!IsPresident(team))
+            {
+                throw new Exception("User not authorized");
+            }
+
             if (team != null) 
             {
                 team.IsActive = false;
@@ -66,6 +71,11 @@ namespace FutApp.Implementations
         public async Task<TeamDto> AddPlayers(List<Guid> players, Guid id)
         {
             Team team = await _teamRepository.GetAsync(id);
+
+            if (!IsPresident(team))
+            {
+                throw new Exception("User not authorized");
+            }
 
             if (team == null) { throw new Exception("Team not found"); }
 
@@ -82,6 +92,18 @@ namespace FutApp.Implementations
             Team teamUpdate = await _teamRepository.UpdateAsync(team);
 
             return ObjectMapper.Map<Team, TeamDto>(teamUpdate);
+        }
+
+        private bool IsPresident(Team team)
+        {
+            string emailUser = CurrentUser.Email;
+
+            if(team != null && emailUser == team.President.Email)
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }
