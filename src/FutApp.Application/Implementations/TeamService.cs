@@ -11,9 +11,12 @@ using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Users;
 using Volo.Abp.Identity;
+using Microsoft.AspNetCore.Authorization;
+using FutApp.Requests;
 
 namespace FutApp.Implementations
 {
+    [Authorize]
     public class TeamService : ApplicationService, ITeamService
     {
         private readonly IRepository<Team, Guid> _teamRepository;
@@ -126,7 +129,19 @@ namespace FutApp.Implementations
             return ObjectMapper.Map<Team, TeamDto>(teamUpdate);
         }
 
+        public async Task AcceptRequest(Guid id, Guid requestId)
+        {
+            Team team = await _teamRepository.FindAsync(id);
+            
+            if (team == null) { throw new Exception("Team not found"); }
 
+            Request? request = team.Requests.Find(x => x.Id == requestId);
+
+            if(request == null) { throw new Exception("Request not found"); }
+
+            request.Status = Status.Success;
+            await _teamRepository.UpdateAsync(team);
+        }
 
         private bool IsPresident(Team team)
         {

@@ -1,5 +1,6 @@
 ﻿using FutApp.Dtos;
 using FutApp.Players;
+using Microsoft.AspNetCore.Authorization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,8 +11,9 @@ using Volo.Abp.Domain.Repositories;
 
 namespace FutApp.Implementations
 {
-        public class PlayerService : ApplicationService, IPlayerService
-        {
+    [Authorize]
+    public class PlayerService : ApplicationService, IPlayerService {
+
         private readonly IRepository<Player, Guid> _playerRepository;
 
         public PlayerService(IRepository<Player, Guid> playerRepository)

@@ -3,6 +3,7 @@ using FutApp.Players;
 using FutApp.Requests;
 using FutApp.Service;
 using FutApp.Teams;
+using Microsoft.AspNetCore.Authorization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,7 @@ using Volo.Abp.ObjectMapping;
 
 namespace FutApp.Implementations
 {
+    [Authorize]
     public class RequestService : ApplicationService, IRequestService
     {
         private readonly IRepository<Request, Guid> _requestRepository;
