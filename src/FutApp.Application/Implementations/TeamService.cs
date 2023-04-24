@@ -9,6 +9,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
+using Volo.Abp.Users;
+using Volo.Abp.Identity;
 
 namespace FutApp.Implementations
 {
@@ -16,11 +18,13 @@ namespace FutApp.Implementations
     {
         private readonly IRepository<Team, Guid> _teamRepository;
         private readonly IRepository<Player, Guid> _playerRepository;
+        private readonly ICurrentUser _currentUser;
 
-        public TeamService(IRepository<Team, Guid> teamRepository, IRepository<Player, Guid> playerRepository)
+        public TeamService(IRepository<Team, Guid> teamRepository, IRepository<Player, Guid> playerRepository, ICurrentUser currentUser)
         {
             _teamRepository = teamRepository;
             _playerRepository = playerRepository;
+            _currentUser = currentUser;
         }
 
         public async Task<List<TeamDto>> GetListAsync()
@@ -47,6 +51,8 @@ namespace FutApp.Implementations
         public async Task<TeamDto> CreateAsync(TeamDto input)
         {
             Team team = ObjectMapper.Map<TeamDto, Team>(input);
+            team.President = (IdentityUser) _currentUser;
+
             await _teamRepository.InsertAsync(team);
 
             return input;
@@ -94,9 +100,37 @@ namespace FutApp.Implementations
             return ObjectMapper.Map<Team, TeamDto>(teamUpdate);
         }
 
+        public async Task<TeamDto> RemovePlayers(List<Guid> players, Guid id)
+        {
+            Team team = await _teamRepository.GetAsync(id);
+
+            if (!IsPresident(team))
+            {
+                throw new Exception("User not authorized");
+            }
+
+            if (team == null) { throw new Exception("Team not found"); }
+
+            foreach (Guid playerId in players)
+            {
+                Player player = await _playerRepository.GetAsync(playerId);
+
+                if (player != null)
+                {
+                    team.Players.Remove(player);
+                }
+            }
+
+            Team teamUpdate = await _teamRepository.UpdateAsync(team);
+
+            return ObjectMapper.Map<Team, TeamDto>(teamUpdate);
+        }
+
+
+
         private bool IsPresident(Team team)
         {
-            string emailUser = CurrentUser.Email;
+            string emailUser = _currentUser.Email;
 
             if(team != null && emailUser == team.President.Email)
             {

@@ -2,6 +2,7 @@
 using FutApp.Players;
 using FutApp.Requests;
 using FutApp.Service;
+using FutApp.Teams;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,10 +17,12 @@ namespace FutApp.Implementations
     public class RequestService : ApplicationService, IRequestService
     {
         private readonly IRepository<Request, Guid> _requestRepository;
+        private readonly IRepository<Team, Guid> _teamRepository;
 
-        public RequestService(IRepository<Request, Guid> requestRepository)
+        public RequestService(IRepository<Request, Guid> requestRepository, IRepository<Team, Guid> teamRepository)
         {
             _requestRepository = requestRepository;
+            _teamRepository = teamRepository;
         }
 
         public async Task<List<RequestDto>> GetListAsync()
@@ -38,13 +41,21 @@ namespace FutApp.Implementations
             return ObjectMapper.Map<Request, RequestDto>(request);
         }
 
-        public async Task<RequestDto> CreateAsync(RequestDto input)
+        public async Task<RequestDto> CreateAsync(RequestDto input, Guid teamId)
         {
+
             Request request = ObjectMapper.Map<RequestDto, Request>(input);
             request.CreationTime = DateTime.Now;
             request.CreatorId = CurrentUser.Id;
 
             Request requestInserted = await _requestRepository.InsertAsync(request);
+            Team team = await _teamRepository.FindAsync(teamId);
+
+            if (team != null)
+            {
+                team.Requests.Add(requestInserted);
+                await _teamRepository.UpdateAsync(team);
+            }
 
             return  ObjectMapper.Map<Request, RequestDto>(requestInserted);
         }

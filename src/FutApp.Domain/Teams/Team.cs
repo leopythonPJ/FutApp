@@ -13,10 +13,15 @@ namespace FutApp.Teams
 {
     public class Team : AuditedAggregateRoot<Guid>
     {
+        private readonly ICurrentUser _currentUser;
+
         public string Name { get; set; } = string.Empty;
         public string ShortName { get; set; } = string.Empty;
         public string Img { get; set; } = string.Empty;
-        public IdentityUser? President { get; set; }
+        public IdentityUser President {
+            get { return President; } 
+            set { President = (IdentityUser) _currentUser; } 
+        }
         public DateTime BirthDate { get; set; }
         public List<Player> Players { get; set; } = new List<Player>();
         public int Goals { get; set; } = 0;
@@ -24,7 +29,7 @@ namespace FutApp.Teams
         public int YellowCards { get; set; } = 0;
         public int RedCards { get; set; } = 0;
         public bool LookingForPlayers { get; set; } = false;
-        public List<Request>? Requests { get; set; }
+        public List<Request> Requests { get; set; } = new List<Request>();
         public bool IsActive { get; set; } = true;
 
     }

@@ -11,7 +11,7 @@ namespace FutApp.Service
     {
         Task<List<RequestDto>> GetListAsync();
         Task<RequestDto> GetAsync(Guid id);
-        Task<RequestDto> CreateAsync(RequestDto input);
+        Task<RequestDto> CreateAsync(RequestDto input, Guid teamId);
         Task DeleteAsync(Guid id);
     }
 }
