@@ -1,4 +1,5 @@
-﻿using FutApp.Teams;
+﻿using FutApp.Statistics;
+using FutApp.Teams;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,11 +15,9 @@ namespace FutApp.Players
         public string LastName { get; set; } = string.Empty;
         public int Number { get; set; } = 0;
         public DateTime BirthDate { get; set; }
-        public int Goals { get; set; } = 0;
-        public int Asists { get; set; } = 0;
         public Position? Position { get; set; }
-        public int YellowCards { get; set; } = 0;
-        public int RedCards { get; set; } = 0;
+        public Guid StatisticID { get; set; }
+        public Statistic Statistic { get; set; } = new Statistic();
         public List<Team>? Teams { get; set; }
         public bool IsActive { get; set; } = true;
 

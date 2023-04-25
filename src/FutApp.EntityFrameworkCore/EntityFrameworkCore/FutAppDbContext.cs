@@ -15,6 +15,7 @@ using Volo.Abp.PermissionManagement.EntityFrameworkCore;
 using Volo.Abp.SettingManagement.EntityFrameworkCore;
 using Volo.Abp.TenantManagement;
 using Volo.Abp.TenantManagement.EntityFrameworkCore;
+using FutApp.Statistics;
 
 namespace FutApp.EntityFrameworkCore;
 
@@ -52,7 +53,8 @@ public class FutAppDbContext :
     //App
     public DbSet<Player> Players { get; set; }
     public DbSet<Team> Teams { get; set; }
-    public DbSet<Request> Request { get; set; }
+    public DbSet<Request> Requests { get; set; }
+    public DbSet<Statistic> Statistics { get; set; }
 
     // Tenant Management
     public DbSet<Tenant> Tenants { get; set; }
@@ -87,6 +89,12 @@ public class FutAppDbContext :
         {
             b.ToTable("Players");
             b.Property(x => x.FirstName).IsRequired().HasMaxLength(50);
+            b.HasOne(x=>x.Statistic).WithOne().OnDelete(DeleteBehavior.NoAction);
+        });
+
+        builder.Entity<Team>(b => 
+        {
+            b.HasOne(x => x.Statistic).WithOne().OnDelete(DeleteBehavior.NoAction);
         });
     }
 }
