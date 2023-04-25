@@ -15,5 +15,7 @@ namespace FutApp.Service
         Task DeleteAsync(Guid id);
         Task<TeamDto> AddPlayers(List<Guid> players, Guid id);
         Task<TeamDto> RemovePlayers(List<Guid> players, Guid id);
+        Task AcceptRequest(Guid id, Guid requestId);
+        Task RejectRequest(Guid id, Guid requestId);
     }
 }

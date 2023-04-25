@@ -143,6 +143,20 @@ namespace FutApp.Implementations
             await _teamRepository.UpdateAsync(team);
         }
 
+        public async Task RejectRequest(Guid id, Guid requestId)
+        {
+            Team team = await _teamRepository.FindAsync(id);
+
+            if (team == null) { throw new Exception("Team not found"); }
+
+            Request? request = team.Requests.Find(x => x.Id == requestId);
+
+            if (request == null) { throw new Exception("Request not found"); }
+
+            request.Status = Status.Rejected;
+            await _teamRepository.UpdateAsync(team);
+        }
+
         private bool IsPresident(Team team)
         {
             string emailUser = _currentUser.Email;
