@@ -11,7 +11,6 @@ using Volo.Abp.Domain.Repositories;
 
 namespace FutApp.Implementations
 {
-    [Authorize]
     public class PlayerService : ApplicationService, IPlayerService {
 
         private readonly IRepository<Player, Guid> _playerRepository;

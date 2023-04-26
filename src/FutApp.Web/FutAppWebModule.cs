@@ -171,6 +171,11 @@ public class FutAppWebModule : AbpModule
                 options.CustomSchemaIds(type => type.FullName);
             }
         );
+
+        services.AddCors(options => options.AddPolicy("ApiCorsPolicy", builder =>
+        {
+            builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
+        }));
     }
 
     public override void OnApplicationInitialization(ApplicationInitializationContext context)
@@ -193,8 +198,10 @@ public class FutAppWebModule : AbpModule
         app.UseCorrelationId();
         app.UseStaticFiles();
         app.UseRouting();
+        app.UseCors("ApiCorsPolicy");
         app.UseAuthentication();
         app.UseAbpOpenIddictValidation();
+        
 
         if (MultiTenancyConsts.IsEnabled)
         {
