@@ -1,4 +1,5 @@
-﻿using FutApp.Players;
+﻿using FutApp.Matches;
+using FutApp.Players;
 using FutApp.Requests;
 using FutApp.Statistics;
 using System;
@@ -29,6 +30,7 @@ namespace FutApp.Teams
         public Statistic Statistic { get; set; } = new Statistic();
         public bool LookingForPlayers { get; set; } = false;
         public List<Request> Requests { get; set; } = new List<Request>();
+        public List<Match> Matches { get; set; } = new List<Match>();
         public bool IsActive { get; set; } = true;
 
     }

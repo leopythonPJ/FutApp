@@ -16,6 +16,7 @@ using Volo.Abp.SettingManagement.EntityFrameworkCore;
 using Volo.Abp.TenantManagement;
 using Volo.Abp.TenantManagement.EntityFrameworkCore;
 using FutApp.Statistics;
+using FutApp.Matches;
 
 namespace FutApp.EntityFrameworkCore;
 
@@ -55,6 +56,8 @@ public class FutAppDbContext :
     public DbSet<Team> Teams { get; set; }
     public DbSet<Request> Requests { get; set; }
     public DbSet<Statistic> Statistics { get; set; }
+    public DbSet<Match> Matches { get; set; }
+    public DbSet<MatchStatics> MatchStatics { get; set; }
 
     // Tenant Management
     public DbSet<Tenant> Tenants { get; set; }
@@ -95,6 +98,12 @@ public class FutAppDbContext :
         builder.Entity<Team>(b => 
         {
             b.HasOne(x => x.Statistic).WithOne().OnDelete(DeleteBehavior.NoAction);
+        });
+
+        builder.Entity<Match>(b =>
+        {
+            b.HasOne(x => x.Local).WithOne().OnDelete(DeleteBehavior.NoAction);
+            b.HasOne(x => x.Visitor).WithOne().OnDelete(DeleteBehavior.NoAction);
         });
     }
 }
