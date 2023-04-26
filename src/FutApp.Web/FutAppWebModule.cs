@@ -178,14 +178,14 @@ public class FutAppWebModule : AbpModule
         var app = context.GetApplicationBuilder();
         var env = context.GetEnvironment();
 
-        if (env.IsProduction())
+        if (env.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
         }
 
         app.UseAbpRequestLocalization();
 
-        if (!env.IsProduction())
+        if (!env.IsDevelopment())
         {
             app.UseErrorPage();
         }
